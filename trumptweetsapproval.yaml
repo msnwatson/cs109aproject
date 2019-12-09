@@ -1,0 +1,16 @@
+name: trumptweetsapproval
+dependencies:
+  - python=3.6
+  - jupyter
+  - seaborn
+  - scikit-learn
+  - beautifulsoup4
+  - pip
+  - numpy
+  - pandas
+  - matplotlib
+  - pillow
+  - requests
+  - ipython
+  - gensim
+  - nltk
