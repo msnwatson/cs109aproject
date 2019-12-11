@@ -4,10 +4,32 @@
 * All of the data used in our analyses can be found [here](https://github.com/msnwatson/cs109aproject/tree/master/data):
 * The Jupyter notebook used to perform analysis can be found [here](https://github.com/msnwatson/cs109aproject/blob/master/trumptweetapproval.ipynb):
 
-## Motivations
+## Problem Statement and Motivation
 
-## Goal
-Construct a predictive model which uses the the topics of Trump’s tweets, favorites, and retweets to predict approval/disapproval rating using poll data from fivethirtyeight as the ground truth.
+We are interested in investigating the possible correlation between the topics of Trump's tweets and Trump's approval rating. 
+
+To do this, we have constructed a model using the topics of Trump's tweets aggregated by day - as well as features describing the time of the tweets, retweet counts, type of day (weekday or weekend), and the previous day's approval rating - to predict the next day's approval rating. 
+
+## Introduction
+
+Since the rise of platforms like Facebook and Twitter, social media has become an increasingly important part of American politics. One of the politicians most associated with rise of social media in American politics is Donald Trump. President Trump is most associated with Twitter, tweeting over 11,000 times between his inauguration in January 2017 and October 2019.[^1] Largely replacing traditional forms of presidential communication (e.g., the White House Press Secretary) with Twitter, President Trump has tweeted, "I love Twitter.... it's like owning your own newspaper--- without the losses."[^2]
+
+Much academic research has investigated Trump's use of Twitter. Scholars have previously used machine learning and other sophisticated analytical tools to explore the association between Trump's tweets and various outcomes, such as the stock market and litigation. Studies of Trump's tweets have used different independent and dependent variables to explore relationships. For instance, sentiment analysis of Trump's tweets has used variation in the emotional valience of tweets to indicate that Trump's staff are more likely to tweet during business hours and Trump, with a more combative tone, is more likely to tweet outside of business hours.[^3] However, to our knowledge, no research has explored the relationship between the topics of Trump's tweets and Trump's approval rating.
+
+In this project, we use Twitter data from Januray 2017 to October 2019 to ask: What is the relationship between the topics Trump tweets about one day and his approval rating the next day? This question is important because in furthers prior research that has investigated the implications of Trump's social media use on the sentiment of the American public towards his presidency. This research provides important insights into the relationship between the American president's novel use of a social media platform and implications for how Americans think of him.
+
+To answer our research question, we construct a predictive model, using the topics of Trump's tweets as a primary predictor variable and the change to the next day's approval rating as a dependent variable. Before creating the predictive model, however, we select the most salient topics of Trump's tweets, that we theorize will have the largest impact on his approval rating using a k-means clustering model. In addition to using these topics selected based on an unsupervized clustering model, we also use a list of topics that we theorize are salient in American politics and therefore potentially important for approval ratings. By clustering the content of tweets, we identify 11 central topics. We then tag each tweet using these topics, aggregate these tags by day, and use this feature - as well as features describing the time of the tweets, retweet counts, type of day (weekday or weekend), and the previous day's approval rating - to predict change to the next day's approval rating.
+
+Based on our analyses, we conclude that the topics of Trump's tweets one day are not predictive of the change in his approval rating to the next day. This result indicates that the topics of Trump's tweets do not have a significant effect on the American public's opinions of him in a short period of time. This may indicate that the people who approve of Trump are not effected by his tweet topics, the effect of tweets is not as immediate as some research has suggested, or - interestingly -   
+- sentiment may matter more than topic for approval ratings. While further research will be needed to investigate these possibilities, this paper makes an important contribution to understandings of the relationship between Trump's tweets and his approval rating.
+
+In the following report, we first describe the Twitter and approval rating data used. Next, we review relevant research and then provide a detailed description of our modeling approach. These sections are followed by a section describing our project's trajectory and discussing results. Finally, we conclude by restating our findings, pointing to some limitations, and speculating on how we might improve this project if given more time.
+
+## Literature Review
+
+In this report, we investigate the relationship between the topics of Trump's tweets one day and the change in his approval rating to the next day. To construct our research question and subsequent modeling plan, we relied on the ["Donald Trump on Social Media" Wikipedia cite](https://en.wikipedia.org/wiki/Donald_Trump_on_social_media#Background:_Social_media_in_the_United_States_presidential_election_campaigns)[^4] for a broad overview of Trump's social media use. This website motivated our project by showing that Trump tweets excessively (see also Carr 2018[^5]), and Trump's tweeting is unprecidented and an important subject of academic interest (see also Enli 2017[^6]). Our TF, Cedric, was also an important source motivating our question and shaping our modeling plan. After deciding to explore the relationship between the content of Trump's tweets and approval rating, Cedric helped narrow the project to focus on the topic of Trump's tweets as a primary independent variable and use the FiveThirtyEight approval rating polls[^7] as a dependent variable. 
+
+## Description of Data
 
 # Data Cleaning
 
@@ -42,7 +64,7 @@ The “tag_list” variable is our primary predictor; we justify its use elsewhe
 1. Clean tweet data:
     Before clustering, the tweet data was cleaned. First, each tweet was transformed into only lowercase characters, stopwords were removed, and URLs were removed. Next, each word in the tweets were stemmed, lemmatized, and tokenized. After the corpus of tweets was cleaned, each word was vectorized using Google’s XXXX.  
 2. Cluster tweet data
-We clustered vectorized words using k-means clustering. We determined 20 was an appropriate number of clusters by XXXX. 
+We clustered vectorized words using k-means clustering. We determined 20 was an appropriate number of clusters by using the elbow plot method. We ran the clustering algorithm, varying the number of clusters in each iteration and measuring the sum of square errors of each cluster. Then, we selected the number of clusters near the elbow point.
 3. Creating tags
 After clusters were created, we read over the words closest to each cluster’s centroid to determine the topic the cluster was describing. Each word was listed and described quantitatively by its cosine similarity with the cluster’s centroid. If the word with the highest cosine similarity value was close to 1 (above 0.9) - indicating a high degree of closeness with the cluster centroid - it was used as the cluster’s topic. However, if the closest word did not have a cosine similarity sufficiently close to 1, we instead deduced a topic based on our reading of the cluster’s most characteristic words; e.g., the words with the highest cosine values. For example, the top four words in one cluster were: obama, clinton, mccain, hillary. In this cluster “obama” had a cosine similarity value of 0.97, so it was used as a tag. The top five words in a different cluster were: $, billion, tax, Unfunded_pension_liability. In this cluster, no word had a cosine similarity greater than 0.9, so we determined that the word most descriptive of this group of words was “money”. Because a number of clusters appeared to be capturing noise, the final list of tags included 11 words: 'obama', 'criminal', 'thanks', 'america', 'china', 'money', 'president', 'democrat', 'trump', 'vote', 'jobs'.
 4. Tagging tweets
@@ -78,3 +100,11 @@ The previous day’s approval is likely to be heavily correlated with the next d
 We used the approval estimate as a response variable, attempting to predict the approval estimate from a given day based off of the tweets of the day and the approval rating of the previous day. It is also an accessible ground truth, against which we can compare our predictions for training and testing purposes. 
 
 We conducted an EDA on the poll data and chose to only consider the approval estimate for All Polls. We plotted the approval estimates versus time and compared the similarity scores between the data for Adults, Voters, and All polls data to the variance of the data and determined that the data were not significantly different between these three categories. This decision also makes sense because the population engaging with Trump’s tweets is not exclusively voters or adults, so we must consider data from all polls.
+
+[^1] Shear, Michael D., Maggie Haberman, Nicholas Confessore, Karen Yourish, Larry Buchanan, and Keith Collins. 2019. “How Trump Reshaped the Presidency in Over 11,000 Tweets.” The New York Times, November 2.
+[^2] Trump, Donald J. 2012. “I Love Twitter.... It’s like Owning Your Own Newspaper--- without the Losses.” @realdonaldtrump. Retrieved December 11, 2019 (https://twitter.com/realdonaldtrump/status/267286284182118400?lang=en).
+[^3]Greenemeier, Larry (August 18, 2016). "Only Some of @realDonaldTrump's Tweets Are Actually Donald Trump". Scientific American. Archived from the original on August 6, 2017. Retrieved June 2, 2017.
+[^4] Anon. 2019. “Donald Trump on Social Media.” Wikipedia.
+[^5] Carr, Nicholas. 2018. “Why Trump Tweets (And Why We Listen).” POLITICO Magazine. Retrieved December 11, 2019 (http://politi.co/2BvZsIV).
+[^6] Enli, Gunn. 2017. “Twitter as Arena for the Authentic Outsider: Exploring the Social Media Campaigns of Trump and Clinton in the 2016 US Presidential Election.” European Journal of Communication 32(1):50–61.
+[^7] Silver, Nate. 2017. “How Popular Is Donald Trump?” FiveThirtyEight. Retrieved December 11, 2019 (https://projects.fivethirtyeight.com/trump-approval-ratings/).
