@@ -60,39 +60,39 @@ After addressing theoretical concerns associated with using longitudinal data, w
 
 ### Primary predictor of interest: 
 
-*tag_list
+*tag_list  
 We operationalize our primary predictory variable of interest - the topics of Trump's tweets - using the variable tag_list. The variable was created in 5 steps: 
-1. Clean tweet data:
+1. Clean tweet data:  
     Before clustering, the tweet data was cleaned. First, each tweet was transformed into only lowercase characters, stopwords were removed, and URLs were removed. Next, each word in the tweets were stemmed, lemmatized, and tokenized. After the corpus of tweets was cleaned, each word was vectorized using the "Pre-Trained word and phrase vectors" created by Google in 2013 (at Cedric's helpful recommendation).  
-2. Cluster tweet data
+2. Cluster tweet data  
     We clustered vectorized words using k-means clustering. We determined 20 was an appropriate number of clusters by using the elbow plot method (see figure below). We ran the clustering algorithm, varying the number of clusters in each iteration and measuring the sum of square errors of each cluster. Then, we selected the number of clusters near the elbow point.
-3. Creating tags
+3. Creating tags  
     After clusters were created, we read over the words closest to each cluster’s centroid to determine the topic the cluster was describing. Each word was listed and described quantitatively by its cosine similarity with the cluster’s centroid. If the word with the highest cosine similarity value was close to 1 (above 0.9) - indicating a high degree of closeness with the cluster centroid - it was used as the cluster’s topic. However, if the closest word did not have a cosine similarity sufficiently close to 1, we instead deduced a topic based on our reading of the cluster’s most characteristic words; e.g., the words with the highest cosine values. For example, the top four words in one cluster were: obama, clinton, mccain, hillary. In this cluster “obama” had a cosine similarity value of 0.97, so it was used as a tag. The top five words in a different cluster were: $, billion, tax, Unfunded_pension_liability. In this cluster, no word had a cosine similarity greater than 0.9, so we determined that the word most descriptive of this group of words was “money”. Because a number of clusters appeared to be capturing noise, the final list of tags included 11 words: 'obama', 'criminal', 'thanks', 'america', 'china', 'money', 'president', 'democrat', 'trump', 'vote', 'jobs'. In addition to this list of tags identified using unsupervized clustering, we used a list of 10 tags that we theorize capture important topics in current American politics: 'liberal', 'republican', 'foreign', 'policy', 'mexico', 'china', 'russia', 'obama', 'taxes', 'media'.
-4. Tagging tweets
+4. Tagging tweets 
     Each of the 11 tags (or 10, when using the list created a priori) were checked for fit with each word in each tweet. Fit was determined by a cosine similarity, between the tag and the word, equal to or greater than 0.5. This threshold was determined based on tests of various thresholds and our assessment that 0.5 best captures the important content of the tweets without tagging too many words. Tags were grouped by tweet.
-5. Pandas Dataframe and Tag Encoding
+5. Pandas Dataframe and Tag Encoding  
     Step 4 produced a dictionary with keys corresponding to tweet indices and values corresponding to a list of tags (some lists were empty, some had multiple tags). This dictionary was added to the Pandas Dataframe containing our other predictor variables.
 
 ![elbow](images/elbow_plot.png)
 
 ### Secondary predictors of interest: 
 
-* Average and variance
+* Average and variance  
 In general, we chose to consider averages because our target variable is approval rating by day. So we needed to generalize data from all the tweets in one day to a single data point. Taking an average also allows us to address the non-uniformity of time-series data. Since each day has a different total number of tweets, the average number of retweets is more informative than the total number of retweets. We also included variance as a predictor because it indicates how we should interpret the average and how we weigh it in our model. For example, if two days have the same average number of retweets but day one has low variance and day two has high variance, this could indicate that on day 1, Trump was tweeting about a significant issue multiple times throughout the day but on day two, Trump tweeted once or twice about a significant issue. 
 
-* rt_avg and rt_var
+* rt_avg and rt_var . 
 We include the average retweet count for every day as a kind of proxy to capture public “engagement” with a particular day’s set of tweets; this engagement might be either positive or negative. Tweets that are retweeted more might be both more viewed (and thus likely to impact more people) or more “important” to people, in the sense that Trump’s followers are more likely to retweet tweets that they care about more (and thus likely to impact people more). Either interpretation of the retweet count would be important in assessing the association of a given day’s tweets with his future approval rating.
 
-* time_avg and time_var 
+* time_avg and time_var  
 We include a feature describing the time (average and variance) when @RealDonaldTrump tweets because previous investigation has shown the content of @RealDonaldTrump tweets varies systematically by time of day. For instance, these investigations have concluded that tweets released outside of business hours are more likely to be combative and be written by Donald Trump rather than his staff. Therefore, the time_of_tweet variable captures variation important for understanding the relationship between tweets and public sentiment towards Trump.  
 
-* tweet_count
+* tweet_count  
 We included each day’s tweet count as a feature to weight each tag in our tag list by the number of tweets that day in addition to then number of times that tag appears in a specific tweet. We also did this to take into account the possibility that the types of tweets might be associated with the total number of tweets on a certain day. 
 
-* is_weekend
+* is_weekend  
 We included weekend as a boolean variable to take into account the differences in tweeting and retweeting behavior on weekends versus weekdays. The content of the tweets might also vary depending on whether it is a weekend or weekday.
 
-* previous_approval
+* previous_approval  
 The previous day’s approval is likely to be heavily correlated with the next day’s approval rating; extremely large swings in approval are probably less likely than more moderate swings. In general, assuming that people change whether or not they approve of Trump based on certain events (including, potentially, tweets), allows us to model a given day’s approval rating  based on the previous day’s approval rating offset by a delta of those who changed their views in the interim.
 
 ### Response Variable:
