@@ -1,6 +1,7 @@
 name: trumptweetsapproval
 dependencies:
   - python=3.6
+  - tensorflow=2.0
   - jupyter
   - seaborn
   - scikit-learn
