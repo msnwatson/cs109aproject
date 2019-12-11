@@ -1,5 +1,9 @@
 # Project Description
 
+## Team Members
+Mason Watson, Maleah Fekete, Sarah Chin, Jasper Fu
+Group 43
+
 ## Accompanying Materials
 * All of the data used in our analyses can be found [here](https://github.com/msnwatson/cs109aproject/tree/master/data):
 * The Jupyter notebook used to perform analysis can be found [here](https://github.com/msnwatson/cs109aproject/blob/master/trumptweetapproval.ipynb):
