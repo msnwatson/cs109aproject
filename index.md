@@ -157,7 +157,6 @@ One limitation of our analysis is that it only tests for the effect of one day's
 
 Given more time, we would also learn more about selecting salient topics via clustering techniques. Our work assumes the most central tweet topics have the greatest association with approval ratings, as implied by our technique of “tagging” each tweet based on a word's proximity to a cluster's centroid. However, it is possible that the most  “predictive” words are not close to cluster centroids. Moreover, while we used a principled “tagging” technique (testing individual word proximities to centroids), the problem of classifying strings of text longer than one word by topic is an open problem in machine learning and data science. Then, given more time, we would also conduct experiments to test the effect of different tagging techniques on accuracy of predictive models.
 
-Footnotes:
 <sup>1</sup>Shear, Michael D., Maggie Haberman, Nicholas Confessore, Karen Yourish, Larry Buchanan, and Keith Collins. 2019. “How Trump Reshaped the Presidency in Over 11,000 Tweets.” The New York Times, November 2.
 
 <sup>2</sup>Trump, Donald J. 2012. “I Love Twitter.... It’s like Owning Your Own Newspaper--- without the Losses.” @realdonaldtrump. Retrieved December 11, 2019 (https://twitter.com/realdonaldtrump/status/267286284182118400?lang=en).
