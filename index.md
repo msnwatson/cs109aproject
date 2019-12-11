@@ -26,7 +26,7 @@ In the following report, we first describe the Twitter and approval rating data 
 
 # Literature Review
 
-In this report, we investigate the relationship between the topics of Trump's tweets one day and the change in his approval rating to the next day. To construct our research question and subsequent modeling plan, we relied on the ["Donald Trump on Social Media" Wikipedia cite](https://en.wikipedia.org/wiki/Donald_Trump_on_social_media#Background:_Social_media_in_the_United_States_presidential_election_campaigns)<sup>4</sup> for a broad overview of Trump's social media use. This website motivated our project by showing that Trump tweets excessively (see also Carr 2018<sup>5</sup>), and Trump's tweeting is unprecidented and an important subject of academic interest (see also Enli 2017<sup>6</sup>). Our TF, Cedric, was also an important source motivating our question and shaping our modeling plan. After deciding to explore the relationship between the content of Trump's tweets and approval rating, Cedric helped narrow the project to focus on the topic of Trump's tweets as a primary independent variable and use the FiveThirtyEight approval rating polls<sup>7</sup> as a dependent variable. 
+In this report, we investigate the relationship between the topics of Trump's tweets one day and the change in his approval rating to the next day. To construct our research question and subsequent modeling plan, we relied on the ["Donald Trump on Social Media" Wikipedia site](https://en.wikipedia.org/wiki/Donald_Trump_on_social_media#Background:_Social_media_in_the_United_States_presidential_election_campaigns)<sup>4</sup> for a broad overview of Trump's social media use. This website motivated our project by showing that Trump tweets excessively (see also Carr 2018<sup>5</sup>), and Trump's tweeting is unprecidented and an important subject of academic interest (see also Enli 2017<sup>6</sup>). Our TF, Cedric, was also an important source motivating our question and shaping our modeling plan. After deciding to explore the relationship between the content of Trump's tweets and approval rating, Cedric helped narrow the project to focus on the topic of Trump's tweets as a primary independent variable and use the FiveThirtyEight approval rating polls<sup>7</sup> as a dependent variable. 
 
 # Description of Data
 
@@ -65,13 +65,15 @@ We operationalize our primary predictory variable of interest - the topics of Tr
 1. Clean tweet data:
     Before clustering, the tweet data was cleaned. First, each tweet was transformed into only lowercase characters, stopwords were removed, and URLs were removed. Next, each word in the tweets were stemmed, lemmatized, and tokenized. After the corpus of tweets was cleaned, each word was vectorized using the "Pre-Trained word and phrase vectors" created by Google in 2013 (at Cedric's helpful recommendation).  
 2. Cluster tweet data
-    We clustered vectorized words using k-means clustering. We determined 20 was an appropriate number of clusters by using the elbow plot method. We ran the clustering algorithm, varying the number of clusters in each iteration and measuring the sum of square errors of each cluster. Then, we selected the number of clusters near the elbow point.
+    We clustered vectorized words using k-means clustering. We determined 20 was an appropriate number of clusters by using the elbow plot method (see figure below). We ran the clustering algorithm, varying the number of clusters in each iteration and measuring the sum of square errors of each cluster. Then, we selected the number of clusters near the elbow point.
 3. Creating tags
     After clusters were created, we read over the words closest to each cluster’s centroid to determine the topic the cluster was describing. Each word was listed and described quantitatively by its cosine similarity with the cluster’s centroid. If the word with the highest cosine similarity value was close to 1 (above 0.9) - indicating a high degree of closeness with the cluster centroid - it was used as the cluster’s topic. However, if the closest word did not have a cosine similarity sufficiently close to 1, we instead deduced a topic based on our reading of the cluster’s most characteristic words; e.g., the words with the highest cosine values. For example, the top four words in one cluster were: obama, clinton, mccain, hillary. In this cluster “obama” had a cosine similarity value of 0.97, so it was used as a tag. The top five words in a different cluster were: $, billion, tax, Unfunded_pension_liability. In this cluster, no word had a cosine similarity greater than 0.9, so we determined that the word most descriptive of this group of words was “money”. Because a number of clusters appeared to be capturing noise, the final list of tags included 11 words: 'obama', 'criminal', 'thanks', 'america', 'china', 'money', 'president', 'democrat', 'trump', 'vote', 'jobs'. In addition to this list of tags identified using unsupervized clustering, we used a list of 10 tags that we theorize capture important topics in current American politics: 'liberal', 'republican', 'foreign', 'policy', 'mexico', 'china', 'russia', 'obama', 'taxes', 'media'.
 4. Tagging tweets
     Each of the 11 tags (or 10, when using the list created a priori) were checked for fit with each word in each tweet. Fit was determined by a cosine similarity, between the tag and the word, equal to or greater than 0.5. This threshold was determined based on tests of various thresholds and our assessment that 0.5 best captures the important content of the tweets without tagging too many words. Tags were grouped by tweet.
 5. Pandas Dataframe and Tag Encoding
     Step 4 produced a dictionary with keys corresponding to tweet indices and values corresponding to a list of tags (some lists were empty, some had multiple tags). This dictionary was added to the Pandas Dataframe containing our other predictor variables.
+
+![elbow](images/elbow_plot.png)
 
 ### Secondary predictors of interest: 
 
@@ -98,7 +100,9 @@ The previous day’s approval is likely to be heavily correlated with the next d
 * approve_estimate
 We used the approval estimate as a response variable, attempting to predict the approval estimate from a given day based off of the tweets of the day and the approval rating of the previous day. It is also an accessible ground truth, against which we can compare our predictions for training and testing purposes. 
 
-We conducted an EDA on the poll data and chose to only consider the approval estimate for All Polls. We plotted the approval estimates versus time and compared the similarity scores between the data for Adults, Voters, and All polls data to the variance of the data and determined that the data were not significantly different between these three categories. This decision also makes sense because the population engaging with Trump’s tweets is not exclusively voters or adults, so we must consider data from all polls.
+We conducted an EDA on the poll data (see below) and chose to only consider the approval estimate for All Polls. We plotted the approval estimates versus time and compared the similarity scores between the data for Adults, Voters, and All polls data to the variance of the data and determined that the data were not significantly different between these three categories. This decision also makes sense because the population engaging with Trump’s tweets is not exclusively voters or adults, so we must consider data from all polls.
+
+![approval](images/image3.png)
 
 ## Model Overview 
 
@@ -124,19 +128,19 @@ This goal of this project was to predict how much Trump’s approval rating woul
 
 The naive implementation of the random forest performed particularly poorly, scoring consistently into the negatives (an average of -0.46 over 100 runs on the test dataset) with just the default values. Even using GridsearchCV to fine-tune for optimal hyperparameters and cross-validate to avoid extensive overfitting, the results were not much better - iterating over different values for max_features, feature_depth, and min_samples_split, the cross-validated score never reached a positive R2.
 
-
+![rf](images/image1.png)
 
 You can see clear evidence of overfitting here with predictions fairly close to the true values on the training set. We also examined the residuals on both the training and test sets and found that the distributions of the residuals on the test set is roughly on the same scale as the distribution of the actual predicted values on the test set. This tells us that the model is not significantly better than randomly guessing the delta values.
 
-
+![resid](images/image5.png)
 
 The polynomial OLS models also performed poorly. We used two design matrices produced from augmenting the original featurized vectors to fit two OLS models (degree 1 and degree 2). The degree 1 model performed marginally worse than the baseline linear model; the degree 2 model performed worse than the single degree model, likely because of overfitting. 
 
-![img1](images/image1.png)
+![lin](images/image2.png)
 
 When we attempted to use LASSO regularization on a third OLS model to reduce multicollinearity and overfitting, the regularization reduced all coefficients to 0, indicating that none of the coefficients we selected were statistically significant in predictive power. 
 
-
+![lasso](images/image4.png)
 
 None of the models ever reached a positive R2, suggesting that we never outperformed a trivial horizontal line (the “predict the mean value” model). This result is not wholly unexpected; even if tweets have predictive power, there would almost certainly be other factors responsible for part of the variation in Trump’s approval rating, like his actual policy decisions or information from external news sources, that would not be captured in our tweet data. Unfortunately, if the tweets are only responsible for a relatively small proportion of Trump’s approval rating delta, issues arise from the aggregate polling data from fivethirtyeight.com we used as ground truths. 
 
