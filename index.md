@@ -100,10 +100,10 @@ We used the approval estimate as a response variable, attempting to predict the 
 
 We conducted an EDA on the poll data and chose to only consider the approval estimate for All Polls. We plotted the approval estimates versus time and compared the similarity scores between the data for Adults, Voters, and All polls data to the variance of the data and determined that the data were not significantly different between these three categories. This decision also makes sense because the population engaging with Trump’s tweets is not exclusively voters or adults, so we must consider data from all polls.
 
-[^1] Shear, Michael D., Maggie Haberman, Nicholas Confessore, Karen Yourish, Larry Buchanan, and Keith Collins. 2019. “How Trump Reshaped the Presidency in Over 11,000 Tweets.” The New York Times, November 2.
-[^2] Trump, Donald J. 2012. “I Love Twitter.... It’s like Owning Your Own Newspaper--- without the Losses.” @realdonaldtrump. Retrieved December 11, 2019 (https://twitter.com/realdonaldtrump/status/267286284182118400?lang=en).
-[^3]Greenemeier, Larry (August 18, 2016). "Only Some of @realDonaldTrump's Tweets Are Actually Donald Trump". Scientific American. Archived from the original on August 6, 2017. Retrieved June 2, 2017.
-[^4] Anon. 2019. “Donald Trump on Social Media.” Wikipedia.
-[^5] Carr, Nicholas. 2018. “Why Trump Tweets (And Why We Listen).” POLITICO Magazine. Retrieved December 11, 2019 (http://politi.co/2BvZsIV).
-[^6] Enli, Gunn. 2017. “Twitter as Arena for the Authentic Outsider: Exploring the Social Media Campaigns of Trump and Clinton in the 2016 US Presidential Election.” European Journal of Communication 32(1):50–61.
-[^7] Silver, Nate. 2017. “How Popular Is Donald Trump?” FiveThirtyEight. Retrieved December 11, 2019 (https://projects.fivethirtyeight.com/trump-approval-ratings/).
+[^1]: Shear, Michael D., Maggie Haberman, Nicholas Confessore, Karen Yourish, Larry Buchanan, and Keith Collins. 2019. “How Trump Reshaped the Presidency in Over 11,000 Tweets.” The New York Times, November 2.
+[^2]: Trump, Donald J. 2012. “I Love Twitter.... It’s like Owning Your Own Newspaper--- without the Losses.” @realdonaldtrump. Retrieved December 11, 2019 (https://twitter.com/realdonaldtrump/status/267286284182118400?lang=en).
+[^3]: Greenemeier, Larry (August 18, 2016). "Only Some of @realDonaldTrump's Tweets Are Actually Donald Trump". Scientific American. Archived from the original on August 6, 2017. Retrieved June 2, 2017.
+[^4]: Anon. 2019. “Donald Trump on Social Media.” Wikipedia.
+[^5]: Carr, Nicholas. 2018. “Why Trump Tweets (And Why We Listen).” POLITICO Magazine. Retrieved December 11, 2019 (http://politi.co/2BvZsIV).
+[^6]: Enli, Gunn. 2017. “Twitter as Arena for the Authentic Outsider: Exploring the Social Media Campaigns of Trump and Clinton in the 2016 US Presidential Election.” European Journal of Communication 32(1):50–61.
+[^7]: Silver, Nate. 2017. “How Popular Is Donald Trump?” FiveThirtyEight. Retrieved December 11, 2019 (https://projects.fivethirtyeight.com/trump-approval-ratings/).
